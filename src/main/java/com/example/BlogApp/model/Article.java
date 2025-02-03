@@ -15,7 +15,6 @@ public class Article {
     int id;
     String nameArticle;
     String nameAuthor;
-    Date datePublication;
-    String comments;
-
+    String textArticle;
+    Date datePublicationArticle;
 }
