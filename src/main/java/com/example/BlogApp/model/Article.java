@@ -1,6 +1,7 @@
 package com.example.BlogApp.model;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import lombok.*;
@@ -13,12 +14,19 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Article {
+
     @Id
-    int id;
+    @GeneratedValue
+    Integer id;
+
     String title;
+
     String Author;
+
     String content;
+
     Date datePublication;
+
 
     @OneToMany(mappedBy = "article")
     private List<Comments> comments;
