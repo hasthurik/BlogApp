@@ -1,2 +1,7 @@
-package com.example.BlogApp.model;public enum Role {
+package com.example.BlogApp.model;
+
+public enum Role {
+    ADMIN,
+    AUTHOR,
+    USER
 }

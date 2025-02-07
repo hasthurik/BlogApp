@@ -1,4 +1,4 @@
-package com.example.BlogApp;
+package com.example.BlogApp.config;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;

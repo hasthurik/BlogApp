@@ -2,14 +2,13 @@ package com.example.BlogApp.controllers;
 
 
 import com.example.BlogApp.Service.UserService;
+import com.example.BlogApp.dto.UserDTO;
 import com.example.BlogApp.model.Article;
 import com.example.BlogApp.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -29,6 +28,17 @@ public class UserController {
     public ResponseEntity<List<User>> getAllUser() {
         return new ResponseEntity<List<User>>(service.getAllUser(), HttpStatus.OK);
     }
+    @GetMapping("/users/{id}")
+    public ResponseEntity<UserDTO> getUserById(@PathVariable int id) {
+        UserDTO user = service.getById(id);
+        return new ResponseEntity<>(user, HttpStatus.OK);
+    }
 
+
+    @PostMapping("/users")
+    public ResponseEntity<User> createUser(@RequestBody User user) {
+        service.createUser(user);
+        return null;
+    }
 
 }

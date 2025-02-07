@@ -2,9 +2,11 @@ package com.example.BlogApp.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import lombok.*;
 
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Data
@@ -13,8 +15,11 @@ import java.util.Date;
 public class Article {
     @Id
     int id;
-    String nameArticle;
-    String nameAuthor;
-    String textArticle;
-    Date datePublicationArticle;
+    String title;
+    String Author;
+    String content;
+    Date datePublication;
+
+    @OneToMany(mappedBy = "article")
+    private List<Comments> comments;
 }
