@@ -13,7 +13,27 @@ public class ArticleService {
     ArticleRepo articleRepo;
 
 
-    public Article findArticleById(int id) {
+    public Article findArticleById(Integer id) {
         return articleRepo.findById(id).orElse(null);
+    }
+
+
+    public Article saveArticle(Article article) {
+        return articleRepo.save(article);
+    }
+
+
+    public void deleteArticleById(Integer id) {
+        articleRepo.deleteById(id);
+    }
+
+
+
+    public Article updateArticleById(Article article, Integer id) {
+        Article editArticle = articleRepo.findById(id).orElse(null);
+        assert editArticle != null;
+        editArticle.setAuthor(article.getAuthor());
+        editArticle.setContent(article.getContent());
+        return articleRepo.save(editArticle);
     }
 }

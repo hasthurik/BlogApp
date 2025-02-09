@@ -1,9 +1,6 @@
 package com.example.BlogApp.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.Date;
@@ -13,21 +10,26 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "article")
 public class Article {
 
     @Id
-    @GeneratedValue
-    Integer id;
+    @GeneratedValue (strategy = GenerationType.SEQUENCE)
+    private Long id;
 
-    String title;
+    @Column(name = "author")
+    private String Author;
 
-    String Author;
+    @Column(name = "title")
+    private String title;
 
-    String content;
+    @Column(name = "content")
+    private String content;
 
-    Date datePublication;
+    @Column(name = "published")
+    private boolean published;
 
+    @Column(name = "datePublication")
+    private Date datePublication;
 
-    @OneToMany(mappedBy = "article")
-    private List<Comments> comments;
 }

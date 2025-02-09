@@ -1,5 +1,6 @@
 package com.example.BlogApp.Service;
 
+import com.example.BlogApp.model.Article;
 import com.example.BlogApp.model.Comments;
 import com.example.BlogApp.repo.CommentsRepo;
 import lombok.RequiredArgsConstructor;
@@ -14,7 +15,19 @@ public class CommentService {
     @Autowired
     CommentsRepo commentsRepo;
 
-    public List<Comments> findCommentsByAtricleID(int id) {
+    @Autowired
+    ArticleService articleService;
+
+    public List<Comments> findCommentsByArticleID(int id) {
         return commentsRepo.findByArticleId(id);
+    }
+
+    public Comments addComment(Integer articleId, Comments comment) {
+        Article article = articleService.findArticleById(articleId);
+        if (article != null) {
+            comment.setArticle(article); // Устанавливаем связь со статьей
+            return commentsRepo.save(comment);
+        }
+        return null;
     }
 }
