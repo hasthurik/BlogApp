@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/articles")
 public class ArticleController {
 
     @Autowired
@@ -21,7 +21,7 @@ public class ArticleController {
     ArticleRepo articleRepo;
 
     //Получение всех опубликованных статей
-    @GetMapping("/articles/published")
+    @GetMapping("/published")
     public ResponseEntity<List<Article>> getPublishedArticles() {
         List<Article> articles = articleRepo.findByPublished(true);
 
@@ -32,7 +32,7 @@ public class ArticleController {
     }
 
     //получение статьи по id
-    @GetMapping("/article/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<Article> getArticleByID(@PathVariable Integer id) {
         Article article = articleService.findArticleById(id);
         if (article == null) {
@@ -43,13 +43,13 @@ public class ArticleController {
     }
 
     //создание(добавление) новой статьи
-    @PostMapping("/article/create")
+    @PostMapping("/create")
     public ResponseEntity<Article> postArticle(@RequestBody Article article) {
         return new ResponseEntity<>(articleService.saveArticle(article), HttpStatus.CREATED);
     }
 
     //Удаление статьи по id
-    @DeleteMapping("/article/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Article> deleteArticle(@PathVariable Integer id) {
         Article article = articleService.findArticleById(id);
         if (article == null) {
@@ -61,7 +61,7 @@ public class ArticleController {
     }
 
     //обновление статьи
-    @PutMapping("/article/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<Article> updateArticle(@PathVariable Integer id, @RequestBody Article article) {
 
         Article article1 = articleService.findArticleById(id);
@@ -70,4 +70,9 @@ public class ArticleController {
         return new ResponseEntity<>(articleService.updateArticleById(article, id), HttpStatus.OK);
     }
 
+    //получение всех заголовков из бд (нативный запрос)
+    @GetMapping("/all")
+    public ResponseEntity<List<String>> findAllArticleTitle() {
+        return new ResponseEntity<>(articleService.findTitle(), HttpStatus.OK);
+    }
 }

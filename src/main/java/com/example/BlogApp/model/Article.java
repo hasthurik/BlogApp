@@ -7,9 +7,10 @@ import java.util.Date;
 import java.util.List;
 
 @Entity
-@Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Getter
+@Setter
 @Table(name = "article")
 public class Article {
 
@@ -31,5 +32,6 @@ public class Article {
 
     @Column(name = "datePublication")
     private Date datePublication;
+
 
 }

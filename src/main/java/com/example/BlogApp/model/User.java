@@ -2,14 +2,13 @@ package com.example.BlogApp.model;
 
 import com.example.BlogApp.model.enums.UserRole;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity
-@Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Getter
+@Setter
 @Table(name = "users")
 public class User  {
     @Id
@@ -19,7 +18,7 @@ public class User  {
     @Column(name = "userName")
     private String userName;
 
-    @Column(name = "email")
+    @Column(name = "email", nullable = false, unique = true)
     private String email;
 
     @Column(name = "password")

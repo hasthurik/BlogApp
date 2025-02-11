@@ -3,6 +3,7 @@ package com.example.BlogApp.Service;
 import com.example.BlogApp.dto.UserDTO;
 import com.example.BlogApp.model.User;
 import com.example.BlogApp.repo.UserRepo;
+import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -36,6 +37,7 @@ public class UserService {
         return modelMapper.map(user, UserDTO.class);
     }
 
+    @Transactional
     public User updateUserData(User user, Integer id) {
         if (repo.findById(id).orElse(null) == null) return null;
         repo.deleteById(id);

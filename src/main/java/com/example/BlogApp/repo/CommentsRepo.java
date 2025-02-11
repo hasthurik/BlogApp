@@ -10,5 +10,4 @@ import java.util.List;
 @Repository
 public interface CommentsRepo extends JpaRepository<Comments, Integer> {
     List<Comments> findByArticleId(Integer id);
-
 }
