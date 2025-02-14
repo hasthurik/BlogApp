@@ -6,6 +6,7 @@ import com.example.BlogApp.repo.UserRepo;
 import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -20,7 +21,11 @@ public class UserService {
     @Autowired
     private ModelMapper modelMapper;
 
+    private BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(10);
+
+
     public Users register(Users user) {
+        user.setPassword(encoder.encode(user.getPassword()));
         return repo.save(user);
     }
 
@@ -51,7 +56,6 @@ public class UserService {
     public Users createUser(Users user) {
         return repo.save(user);
     }
-
 
     //delete
     public List<Users> allUsers() {

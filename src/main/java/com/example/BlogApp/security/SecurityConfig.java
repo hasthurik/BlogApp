@@ -11,6 +11,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
@@ -22,7 +23,7 @@ public class SecurityConfig {
     private UserDetailsService userDetailsService;
 
 
-    //своя настройка филтров
+    //своя настройка фильтров
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http.csrf(customizer -> customizer.disable()).  //отключение csrf
@@ -35,7 +36,7 @@ public class SecurityConfig {
     @Bean
     public AuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider(); //пользователь из бд
-        provider.setPasswordEncoder(NoOpPasswordEncoder.getInstance());  // отключение кодировщика паролей
+        provider.setPasswordEncoder(new BCryptPasswordEncoder(10));  // устанавливаем кодировщик BCryptPasswordEncoder
         provider.setUserDetailsService(userDetailsService); // Устанавливаем UserDetailsService
         return provider;
     }
