@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -70,9 +71,16 @@ public class ArticleController {
         return new ResponseEntity<>(articleService.updateArticleById(article, id), HttpStatus.OK);
     }
 
-    //получение всех заголовков из бд (нативный запрос)
+    //получение всех заголовков опубликованных стетей (нативный запрос)
     @GetMapping("/all")
     public ResponseEntity<List<String>> findAllArticleTitle() {
         return new ResponseEntity<>(articleService.findTitle(), HttpStatus.OK);
+    }
+
+    //
+    @GetMapping("/search")
+    public ResponseEntity<ArrayList<String[]>> findArticle(@RequestParam String title) {
+        if (articleService.findArticleByRequest(title).isEmpty()) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(articleService.findArticleByRequest(title), HttpStatus.OK);
     }
 }

@@ -9,8 +9,9 @@ import lombok.*;
 @NoArgsConstructor
 @Getter
 @Setter
+@Builder
 @Table(name = "users")
-public class User  {
+public class Users {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -24,6 +25,7 @@ public class User  {
     @Column(name = "password")
     private String password;
 
-//    @Enumerated(EnumType.STRING)
-//    private UserRole role;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "role")
+    private UserRole role;
 }

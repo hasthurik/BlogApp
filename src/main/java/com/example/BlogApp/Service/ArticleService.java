@@ -5,6 +5,7 @@ import com.example.BlogApp.repo.ArticleRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -29,7 +30,6 @@ public class ArticleService {
     }
 
 
-
     public Article updateArticleById(Article article, Integer id) {
         Article editArticle = articleRepo.findById(id).orElse(null);
         assert editArticle != null;
@@ -38,7 +38,13 @@ public class ArticleService {
         return articleRepo.save(editArticle);
     }
 
+
     public List<String> findTitle() {
         return articleRepo.findAllArticleTitle();
+    }
+
+
+    public ArrayList<String[]> findArticleByRequest(String title) {
+        return articleRepo.findArticleByTextRequest(title);
     }
 }
