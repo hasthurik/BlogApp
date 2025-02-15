@@ -1,25 +1,37 @@
 package com.example.BlogApp.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.Date;
 import java.util.List;
 
 @Entity
-@Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Getter
+@Setter
+@Table(name = "article")
 public class Article {
-    @Id
-    int id;
-    String title;
-    String Author;
-    String content;
-    Date datePublication;
 
-    @OneToMany(mappedBy = "article")
-    private List<Comments> comments;
+    @Id
+    @GeneratedValue (strategy = GenerationType.SEQUENCE)
+    private Long id;
+
+    @Column(name = "author")
+    private String Author;
+
+    @Column(name = "title")
+    private String title;
+
+    @Column(name = "content")
+    private String content;
+
+    @Column(name = "published")
+    private boolean published;
+
+    @Column(name = "datePublication")
+    private Date datePublication;
+
+
 }
