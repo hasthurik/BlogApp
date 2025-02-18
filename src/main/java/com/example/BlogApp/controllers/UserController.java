@@ -18,12 +18,19 @@ public class UserController {
     @Autowired
     UserService service;
 
-
+    //регистрация нового пользователя
     @PostMapping("/register")
     public ResponseEntity<Users> register(@RequestBody Users users) {
         return new ResponseEntity<>(service.register(users), HttpStatus.OK);
     }
 
+    //авторизация
+    @PostMapping("/login")
+    public String login(@RequestBody Users user) {
+        return service.verify(user);
+    }
+
+    //получение данных всех пользователей
     @GetMapping("/allUs")
     public ResponseEntity<List<Users>> allUs () {
         return new ResponseEntity<>(service.allUsers(), HttpStatus.OK);
@@ -34,7 +41,6 @@ public class UserController {
     public ResponseEntity<List<UserDTO>> getAllUser() {
         return new ResponseEntity<>(service.getAllUser(), HttpStatus.OK);
     }
-
 
     //пользователь по id (dto)
     @GetMapping("/{id}")
