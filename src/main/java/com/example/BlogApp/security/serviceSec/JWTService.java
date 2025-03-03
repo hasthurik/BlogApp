@@ -51,7 +51,6 @@ public class JWTService {
         return Keys.hmacShaKeyFor(keyBytes);
     }
 
-
     //получение имени пользователя из jwt токена
     public String extractUserName(String token) {
         return extractClaim(token, Claims::getSubject);

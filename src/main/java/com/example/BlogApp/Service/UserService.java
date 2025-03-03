@@ -1,5 +1,6 @@
 package com.example.BlogApp.Service;
 
+import com.example.BlogApp.dto.LoginUserDTO;
 import com.example.BlogApp.dto.UserDTO;
 import com.example.BlogApp.model.Users;
 import com.example.BlogApp.repo.UserRepo;
@@ -31,7 +32,7 @@ public class UserService {
     @Autowired
     private JWTService jwtService;
 
-    private BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(10);
+    private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(10);
 
 
     public Users register(Users user) {
@@ -67,15 +68,10 @@ public class UserService {
         return repo.save(user);
     }
 
-
-    public List<Users> allUsers() {
-        return repo.findAll();
-    }
-
-    public String verify(Users user) {
-        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getUserName(), user.getPassword()));
+    public String verify(LoginUserDTO user) {
+        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword()));
         if (authentication.isAuthenticated()) {
-            return jwtService.generateToken(user.getUserName());
+            return jwtService.generateToken(user.getEmail());
         }
         return "fail";
     }
