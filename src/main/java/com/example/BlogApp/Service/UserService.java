@@ -4,7 +4,7 @@ import com.example.BlogApp.dto.LoginUserDTO;
 import com.example.BlogApp.dto.UserDTO;
 import com.example.BlogApp.model.Users;
 import com.example.BlogApp.repo.UserRepo;
-import com.example.BlogApp.security.serviceSec.JWTService;
+import com.example.BlogApp.security.serviceSec.JwtService;
 import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,20 +25,6 @@ public class UserService {
 
     @Autowired
     private ModelMapper modelMapper;
-
-    @Autowired
-    private AuthenticationManager authenticationManager;
-
-    @Autowired
-    private JWTService jwtService;
-
-    private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(10);
-
-
-    public Users register(Users user) {
-        user.setPassword(encoder.encode(user.getPassword()));
-        return repo.save(user);
-    }
 
     public List<UserDTO> getAllUser() {
         List<Users> users = repo.findAll();
@@ -68,11 +54,5 @@ public class UserService {
         return repo.save(user);
     }
 
-    public String verify(LoginUserDTO user) {
-        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword()));
-        if (authentication.isAuthenticated()) {
-            return jwtService.generateToken(user.getEmail());
-        }
-        return "fail";
-    }
+
 }

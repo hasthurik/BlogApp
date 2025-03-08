@@ -19,18 +19,6 @@ public class UserController {
     @Autowired
     UserService service;
 
-    //регистрация нового пользователя
-    @PostMapping("/register")
-    public ResponseEntity<Users> register(@RequestBody Users users) {
-        return new ResponseEntity<>(service.register(users), HttpStatus.OK);
-    }
-
-    //авторизация
-    @PostMapping("/login")
-    public String login(@RequestBody LoginUserDTO user) {
-        return service.verify(user);
-    }
-
     public ResponseEntity<String> login(@RequestBody UserDTO userDTO) {
         return null;
     }
