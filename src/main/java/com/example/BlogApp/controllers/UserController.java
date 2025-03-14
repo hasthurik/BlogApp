@@ -19,9 +19,6 @@ public class UserController {
     @Autowired
     UserService service;
 
-    public ResponseEntity<String> login(@RequestBody UserDTO userDTO) {
-        return null;
-    }
 
     //Получение всех пользователей (dto)
     @GetMapping()

@@ -32,16 +32,14 @@ public class AuthenticationService {
     //метод для регистрации пользователя
     public AuthenticationResponse register(Users request) {
         Users user = new Users();
-        user.setUserName(request.getUserName());
+        user.setUserName(request.getUsername());
         user.setEmail(request.getEmail());
         user.setPassword(passwordEncoder.encode(request.getPassword()));
-
         user.setRole(user.getRole());
 
         user = repo.save(user);
 
         String token = jwtService.generateToken(user);
-
         return new AuthenticationResponse(token);
     }
 
@@ -49,11 +47,12 @@ public class AuthenticationService {
     public AuthenticationResponse authenticate(Users request) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
-                        request.getUserName(),
+                        request.getUsername(),
                         request.getPassword()
                 )
         );
-        Users user = repo.findByUserName(request.getUserName()).orElseThrow();
+        Users user = repo.findByUserName(request.getUsername())
+                .orElseThrow(() -> new RuntimeException("User not found"));
         String token = jwtService.generateToken(user);
 
         return new AuthenticationResponse(token);

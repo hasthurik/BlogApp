@@ -1,10 +1,12 @@
-package com.example.BlogApp.security;
+package com.example.BlogApp.security.secConfig;
 
 
 import com.example.BlogApp.security.filter.JwtAuthenticationFilter;
+import com.example.BlogApp.security.modelSec.MyAccessDeniedHandler;
 import com.example.BlogApp.security.serviceSec.UsersDetailService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -14,6 +16,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
@@ -24,9 +27,12 @@ public class SecurityConfig {
 
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
-    public SecurityConfig(UsersDetailService usersDetailService, JwtAuthenticationFilter jwtAuthenticationFilter) {
+    private final MyAccessDeniedHandler accessDeniedHandler;
+
+    public SecurityConfig(UsersDetailService usersDetailService, JwtAuthenticationFilter jwtAuthenticationFilter, MyAccessDeniedHandler accessDeniedHandler) {
         this.usersDetailService = usersDetailService;
         this.jwtAuthenticationFilter = jwtAuthenticationFilter;
+        this.accessDeniedHandler = accessDeniedHandler;
     }
 
     @Bean
@@ -39,6 +45,8 @@ public class SecurityConfig {
                                 .anyRequest()
                                 .authenticated()
                 ).userDetailsService(usersDetailService)
+                .exceptionHandling(exep -> exep.accessDeniedHandler(accessDeniedHandler)
+                        .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();

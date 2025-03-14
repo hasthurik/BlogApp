@@ -57,12 +57,11 @@ public class JwtService {
                 .parseSignedClaims(token)
                 .getPayload();
     }
-
     //Генерация jwt токена
     public String generateToken(Users user) {
         String token = Jwts
                 .builder()
-                .subject(user.getUserName())
+                .subject(user.getUsername())
                 .issuedAt(new Date(System.currentTimeMillis()))
                 .expiration(new Date(System.currentTimeMillis() + 24*60*60*1000))
                 .signWith(getSignKey())
