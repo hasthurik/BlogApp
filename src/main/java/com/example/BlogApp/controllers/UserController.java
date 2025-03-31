@@ -2,6 +2,7 @@ package com.example.BlogApp.controllers;
 
 
 import com.example.BlogApp.Service.UserService;
+import com.example.BlogApp.dto.LoginUserDTO;
 import com.example.BlogApp.dto.UserDTO;
 import com.example.BlogApp.model.Users;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,22 +20,11 @@ public class UserController {
     UserService service;
 
 
-    @PostMapping("/register")
-    public ResponseEntity<Users> register(@RequestBody Users users) {
-        return new ResponseEntity<>(service.register(users), HttpStatus.OK);
-    }
-
-    @GetMapping("/allUs")
-    public ResponseEntity<List<Users>> allUs () {
-        return new ResponseEntity<>(service.allUsers(), HttpStatus.OK);
-    }
-
     //Получение всех пользователей (dto)
     @GetMapping()
     public ResponseEntity<List<UserDTO>> getAllUser() {
         return new ResponseEntity<>(service.getAllUser(), HttpStatus.OK);
     }
-
 
     //пользователь по id (dto)
     @GetMapping("/{id}")
