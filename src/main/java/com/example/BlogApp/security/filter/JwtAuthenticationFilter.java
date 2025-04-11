@@ -1,12 +1,13 @@
 package com.example.BlogApp.security.filter;
 
 import com.example.BlogApp.security.serviceSec.JwtService;
-import com.example.BlogApp.security.serviceSec.UsersDetailService;
+import com.example.BlogApp.security.serviceSec.CustomUsersDetailService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -24,9 +25,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final JwtService jwtService;
 
     @Autowired
-    private final UsersDetailService userDetailsService;
+    private final CustomUsersDetailService userDetailsService;
 
-    public JwtAuthenticationFilter(JwtService jwtService, UsersDetailService userDetailsService) {
+    public JwtAuthenticationFilter(JwtService jwtService, CustomUsersDetailService userDetailsService) {
         this.jwtService = jwtService;
         this.userDetailsService = userDetailsService;
     }

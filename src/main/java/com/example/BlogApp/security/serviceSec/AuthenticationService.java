@@ -1,7 +1,9 @@
 package com.example.BlogApp.security.serviceSec;
 
 import com.example.BlogApp.model.AuthenticationResponse;
+import com.example.BlogApp.model.Role;
 import com.example.BlogApp.model.Users;
+import com.example.BlogApp.repo.RoleRepo;
 import com.example.BlogApp.repo.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -9,12 +11,17 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Set;
+
 
 @Service
 public class AuthenticationService {
 
     @Autowired
-    private final UserRepo repo;
+    private final UserRepo userRepo;
+
+    @Autowired
+    private RoleRepo roleRepo;
 
     private final PasswordEncoder passwordEncoder;
 
@@ -23,7 +30,7 @@ public class AuthenticationService {
     private final AuthenticationManager authenticationManager;
 
     public AuthenticationService(UserRepo repo, PasswordEncoder passwordEncoder, JwtService jwtService, AuthenticationManager authenticationManager) {
-        this.repo = repo;
+        this.userRepo = repo;
         this.passwordEncoder = passwordEncoder;
         this.jwtService = jwtService;
         this.authenticationManager = authenticationManager;
@@ -35,9 +42,14 @@ public class AuthenticationService {
         user.setUserName(request.getUsername());
         user.setEmail(request.getEmail());
         user.setPassword(passwordEncoder.encode(request.getPassword()));
-        user.setRole(user.getRole());
 
-        user = repo.save(user);
+        Role userRole = roleRepo.findByName("ROLE_USER")
+                .orElseGet(() -> roleRepo.save(new Role("ROLE_USER")));
+
+        request.setRoles(Set.of(userRole));
+        userRepo.save(request);
+
+        user = userRepo.save(user);
 
         String token = jwtService.generateToken(user);
         return new AuthenticationResponse(token);
@@ -51,7 +63,7 @@ public class AuthenticationService {
                         request.getPassword()
                 )
         );
-        Users user = repo.findByUserName(request.getUsername())
+        Users user = userRepo.findByUserName(request.getUsername())
                 .orElseThrow(() -> new RuntimeException("User not found"));
         String token = jwtService.generateToken(user);
 
